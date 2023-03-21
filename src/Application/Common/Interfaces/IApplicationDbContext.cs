@@ -9,11 +9,11 @@ public interface IApplicationDbContext
 
     DbSet<TodoItem> TodoItems { get; }
     
-    DbSet<Cart> Carts { get; }
+    DbSet<Domain.Entities.Cart> Carts { get; }
     
-    DbSet<Category> Categories { get; }
+    DbSet<Domain.Entities.Category> Categories { get; }
     
-    DbSet<Product> Products { get; }
+    DbSet<Domain.Entities.Product> Products { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using MediatR;
 using OnlineStore.Application.Common.Interfaces;
-using OnlineStore.Domain.Entities;
 
-namespace Microsoft.Extensions.DependencyInjection.Cart.Commands.CreateCartCommand;
+namespace OnlineStore.Application.Cart.Commands.CreateCartCommand;
 
 public class CreateCartCommand : IRequest<int>
 {
