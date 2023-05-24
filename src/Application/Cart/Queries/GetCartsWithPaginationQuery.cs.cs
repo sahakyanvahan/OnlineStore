@@ -8,7 +8,7 @@ using OnlineStore.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 
 namespace OnlineStore.Application.Cart.Queries;
 
-public class GetCartsWithPaginationQuery: IRequest<PaginatedList<CartDto>>
+public class GetCartsWithPaginationQuery : IRequest<PaginatedList<CartDto>>
 {
     public int PageNumber { get; init; } = 1;
     public int PageSize { get; init; } = 10;

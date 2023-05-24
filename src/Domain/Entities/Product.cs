@@ -22,4 +22,8 @@ public class Product
     public Category Category { get; set; }
     
     public int CategoryId { get; set; }
+
+    public Cart Cart { get; set; }
+
+    public int CartId { get; set; }
 }

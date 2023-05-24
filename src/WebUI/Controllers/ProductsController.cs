@@ -14,7 +14,7 @@ public class ProductsController : ApiControllerBase
     {
         return await Mediator.Send(query);
     }
-    
+
     [HttpPost]
     public async Task<ActionResult<int>> Create(CreateProductCommand command)
     {
