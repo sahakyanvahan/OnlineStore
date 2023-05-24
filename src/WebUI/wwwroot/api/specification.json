@@ -46,12 +46,12 @@
         }
       }
     },
-    "/info": {
+    "/v1/info": {
       "get": {
         "tags": [
           "Carts"
         ],
-        "operationId": "Carts_GetCartsInfo",
+        "operationId": "Carts_GetCartInfo",
         "parameters": [
           {
             "name": "Id",
@@ -70,6 +70,46 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CartDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/info": {
+      "get": {
+        "tags": [
+          "Carts"
+        ],
+        "operationId": "Carts_GetCartInfoV2",
+        "parameters": [
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedListOfCartDto"
                 }
               }
             }

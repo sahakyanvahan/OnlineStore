@@ -17,7 +17,8 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface ICartsClient {
     getCartsWithPagination(pageNumber: number | undefined, pageSize: number | undefined): Observable<PaginatedListOfCartDto>;
-    getCartsInfo(id: number | undefined): Observable<CartDto>;
+    getCartInfo(id: number | undefined): Observable<CartDto>;
+    getCartInfoV2(pageNumber: number | undefined, pageSize: number | undefined): Observable<PaginatedListOfCartDto>;
     addProductToCart(command: AddProductToCartCommand): Observable<number>;
 }
 
@@ -90,8 +91,8 @@ export class CartsClient implements ICartsClient {
         return _observableOf(null as any);
     }
 
-    getCartsInfo(id: number | undefined): Observable<CartDto> {
-        let url_ = this.baseUrl + "/info?";
+    getCartInfo(id: number | undefined): Observable<CartDto> {
+        let url_ = this.baseUrl + "/v1/info?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -107,11 +108,11 @@ export class CartsClient implements ICartsClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetCartsInfo(response_);
+            return this.processGetCartInfo(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetCartsInfo(response_ as any);
+                    return this.processGetCartInfo(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<CartDto>;
                 }
@@ -120,7 +121,7 @@ export class CartsClient implements ICartsClient {
         }));
     }
 
-    protected processGetCartsInfo(response: HttpResponseBase): Observable<CartDto> {
+    protected processGetCartInfo(response: HttpResponseBase): Observable<CartDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -132,6 +133,62 @@ export class CartsClient implements ICartsClient {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = CartDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getCartInfoV2(pageNumber: number | undefined, pageSize: number | undefined): Observable<PaginatedListOfCartDto> {
+        let url_ = this.baseUrl + "/v2/info?";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCartInfoV2(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCartInfoV2(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PaginatedListOfCartDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PaginatedListOfCartDto>;
+        }));
+    }
+
+    protected processGetCartInfoV2(response: HttpResponseBase): Observable<PaginatedListOfCartDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaginatedListOfCartDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {

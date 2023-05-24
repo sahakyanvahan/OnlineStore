@@ -5,8 +5,6 @@ using OnlineStore.Application.Common.Models;
 
 namespace OnlineStore.WebUI.Controllers;
 
-[ApiVersion("1.0")]
-[ApiVersion("2.0")]
 public class CartsController : ApiControllerBase
 {
     [HttpGet]
@@ -15,14 +13,13 @@ public class CartsController : ApiControllerBase
         return await Mediator.Send(query);
     }
 
-    [HttpGet("/info")]
+    [HttpGet("/v1/info")]
     public async Task<ActionResult<CartDto>> GetCartInfo([FromQuery] GetCartInfoQuery query)
     {
         return await Mediator.Send(query);
     }
 
-    [HttpGet("/info")]
-    [MapToApiVersion("2.0")]
+    [HttpGet("/v2/info")]
     public async Task<ActionResult<PaginatedList<CartDto>>> GetCartInfoV2([FromQuery] GetCartsWithPaginationQuery query)
     {
         return await Mediator.Send(query);
