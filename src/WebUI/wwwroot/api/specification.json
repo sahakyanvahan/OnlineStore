@@ -6,7 +6,7 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/api/Carts": {
+    "/api/v1/Carts": {
       "get": {
         "tags": [
           "Carts"
@@ -46,7 +46,7 @@
         }
       }
     },
-    "/v1/info": {
+    "/api/v1/Carts/info": {
       "get": {
         "tags": [
           "Carts"
@@ -77,47 +77,7 @@
         }
       }
     },
-    "/v2/info": {
-      "get": {
-        "tags": [
-          "Carts"
-        ],
-        "operationId": "Carts_GetCartInfoV2",
-        "parameters": [
-          {
-            "name": "PageNumber",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          },
-          {
-            "name": "PageSize",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 2
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaginatedListOfCartDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/add-product": {
+    "/api/v1/Carts/add-product": {
       "post": {
         "tags": [
           "Carts"
@@ -859,6 +819,46 @@
             "JWT": []
           }
         ]
+      }
+    },
+    "/api/v2/Carts": {
+      "get": {
+        "tags": [
+          "Carts"
+        ],
+        "operationId": "Carts_GetCartInfoV2",
+        "parameters": [
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedListOfCartDto"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },

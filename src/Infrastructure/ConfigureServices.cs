@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using OnlineStore.Infrastructure.MessageBroker;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -40,6 +41,8 @@ public static class ConfigureServices
 
         services.AddIdentityServer()
             .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+
+        services.AddSingleton(sp => RabbitHutch.CreateBus("localhost"));
 
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<IIdentityService, IdentityService>();

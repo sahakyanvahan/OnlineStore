@@ -15,10 +15,12 @@ public record CreateCategoryCommand : IRequest<int>
 public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, int>
 {
     private readonly IApplicationDbContext _context;
+    private readonly IBus _bus;
 
-    public CreateCategoryCommandHandler(IApplicationDbContext context)
+    public CreateCategoryCommandHandler(IApplicationDbContext context, IBus bus)
     {
         _context = context;
+        _bus = bus;
     }
 
     public async Task<int> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
@@ -31,6 +33,7 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
         
         await _context.Categories.AddAsync(category, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
+        await _bus.SendAsync("products", request);
         return category.Id;
     }
 }

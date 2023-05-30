@@ -1,3 +1,4 @@
+using OnlineStore.Infrastructure.MessageBroker;
 using OnlineStore.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
 builder.Services.AddWebUIServices();
 
 var app = builder.Build();

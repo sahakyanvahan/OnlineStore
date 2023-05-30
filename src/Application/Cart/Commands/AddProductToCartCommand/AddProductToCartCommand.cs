@@ -1,7 +1,6 @@
 ﻿using MediatR;
+using OnlineStore.Application.Category.Commands.CreateCategoryCommand;
 using OnlineStore.Application.Common.Interfaces;
-using OnlineStore.Domain.Events;
-using OnlineStore.Domain.Entities;
 
 namespace OnlineStore.Application.Cart.Commands.AddProductToCartCommand;
 public class AddProductToCartCommand : IRequest<int>
@@ -24,10 +23,12 @@ public class AddProductToCartCommand : IRequest<int>
 public class AddProductToCartCommandHandler : IRequestHandler<AddProductToCartCommand, int>
 {
     private readonly IApplicationDbContext _context;
+    private readonly IBus _bus;
 
-    public AddProductToCartCommandHandler(IApplicationDbContext context)
+    public AddProductToCartCommandHandler(IApplicationDbContext context, IBus bus)
     {
         _context = context;
+        _bus = bus;
     }
 
     public async Task<int> Handle(AddProductToCartCommand request, CancellationToken cancellationToken)
@@ -44,6 +45,13 @@ public class AddProductToCartCommandHandler : IRequestHandler<AddProductToCartCo
 
         await _context.Products.AddAsync(product);
         await _context.SaveChangesAsync(cancellationToken);
+
+        await _bus.ReceiveAsync<CreateCategoryCommand>("products", x =>
+        {
+            //TODO: Add some logic here later
+        });
+
+
         return product.Id;
     }
 }
