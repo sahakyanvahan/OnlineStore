@@ -303,7 +303,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "post": {
         "tags": [
@@ -334,7 +339,14 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": [
+              "Manager"
+            ]
+          }
+        ]
       }
     },
     "/api/Products/{id}": {
@@ -379,7 +391,14 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": [
+              "Manager"
+            ]
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -410,7 +429,14 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": [
+              "Manager"
+            ]
+          }
+        ]
       }
     },
     "/api/TodoItems": {

@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Reflection.Emit;
 
 namespace OnlineStore.Infrastructure.Persistence;
 
@@ -36,6 +37,17 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        //builder.Entity<Cart>().Property(o => o.Price).HasPrecision(18, 4);
+        //builder.Entity<Product>().Property(o => o.Price).HasPrecision(18, 4);
+
+        builder.Entity<Cart>()
+            .Property(o => o.Price)
+            .HasColumnType("decimal(18,4)");
+
+        builder.Entity<Product>()
+            .Property(o => o.Price)
+            .HasColumnType("decimal(18,4)");
 
         base.OnModelCreating(builder);
     }
